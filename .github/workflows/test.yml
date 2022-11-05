@@ -1,0 +1,75 @@
+name: Test
+run-name: ${{ github.actor }} is running test
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test-backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Set up python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+      - name: Load cached Poetry installation
+        uses: actions/cache@v3
+        with:
+          path: ~/.local # the path depends on the OS
+          key: poetry-0 # increment to reset cache
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+      - name: Load cached dependencies
+        id: cached-dependencies
+        uses: actions/cache@v3
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
+      - name: Install dependencies
+        if: steps.cached-dependencies.outputs.cache-hit != 'true'
+        run: poetry install --no-interaction --no-root
+      - name: Lint
+        run: |
+          paths=(app tests)
+          echo "Running isort"
+          poetry run isort --check ${paths[@]}
+          echo "Running black"
+          poetry run black --check ${paths[@]}
+          echo "Running flake8"
+          poetry run flake8 ${paths[@]}
+          echo "Running mypy"
+          poetry run mypy ${paths[@]}
+      - name: Run test
+        run: |
+          poetry run pytest
+  test-frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Setup node js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Load cached dependencies
+        uses: actions/cache@v3
+        id: cached-dependencies
+        with:
+          path: node_modules
+          key: node_modules-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+      - name: Install dependencies
+        if: ${{ steps.cached-dependencies.outputs.cache-hit != 'true' }}
+        run: npm install
+      - name: Lint
+        run: npm run lint-check
+      - name: Run test
+        run: npm run test:unit
