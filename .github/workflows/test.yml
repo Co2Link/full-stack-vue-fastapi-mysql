@@ -39,6 +39,8 @@ jobs:
       - name: Install dependencies
         if: steps.cached-dependencies.outputs.cache-hit != 'true'
         run: poetry install --no-interaction --no-root
+      - name: List all files under working directory
+        run: ls -a
       - name: Lint
         run: |
           paths=(app tests)
