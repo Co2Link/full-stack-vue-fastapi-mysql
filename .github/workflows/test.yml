@@ -14,12 +14,6 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
-      - name: Set up python
-        id: setup-python
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.10"
-          cache: "poetry"
       - name: Load cached Poetry installation
         uses: actions/cache@v3
         with:
@@ -29,6 +23,12 @@ jobs:
         uses: snok/install-poetry@v1
       - name: Install dependencies
         run: poetry install --no-interaction
+      - name: Set up python
+        id: setup-python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+          cache: "poetry"
       - name: Lint
         run: |
           paths=(app tests)
