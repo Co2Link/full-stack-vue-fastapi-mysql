@@ -21,14 +21,15 @@ jobs:
           key: poetry-0 # increment to reset cache
       - name: Install Poetry
         uses: snok/install-poetry@v1
-      - name: Install dependencies
-        run: poetry install --no-interaction
       - name: Set up python
         id: setup-python
         uses: actions/setup-python@v4
         with:
           python-version: "3.10"
           cache: "poetry"
+          cache-dependency-path: "backend/pyproject.toml"
+      - name: Install dependencies
+        run: poetry install --no-interaction
       - name: Lint
         run: |
           paths=(app tests)
