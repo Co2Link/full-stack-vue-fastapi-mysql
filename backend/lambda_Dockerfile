@@ -1,0 +1,25 @@
+# Integrating Python Poetry with Docker https://stackoverflow.com/a/54763270
+FROM public.ecr.aws/lambda/python:3.9
+
+ENV PYTHONFAULTHANDLER=1 \
+  PYTHONUNBUFFERED=1 \
+  PIP_NO_CACHE_DIR=off \
+  PIP_DISABLE_PIP_VERSION_CHECK=on \
+  PIP_DEFAULT_TIMEOUT=100 \
+  POETRY_VERSION=1.2.2
+
+WORKDIR ${LAMBDA_TASK_ROOT}
+
+# Install poetry
+RUN pip install "poetry==$POETRY_VERSION"
+
+# Install dependencies
+COPY poetry.lock pyproject.toml ./
+RUN poetry config virtualenvs.create false && \
+  poetry install --without dev --with lambda --no-interaction --no-ansi
+
+# Copy function code
+COPY app app
+COPY lambda_handler.py .
+
+CMD ["lambda_handler.handler"]

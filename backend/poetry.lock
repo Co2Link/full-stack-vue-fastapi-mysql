@@ -193,6 +193,17 @@ plugins = ["setuptools"]
 requirements-deprecated-finder = ["pip-api", "pipreqs"]
 
 [[package]]
+name = "mangum"
+version = "0.16.0"
+description = "AWS Lambda support for ASGI applications"
+category = "dev"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+typing-extensions = "*"
+
+[[package]]
 name = "mccabe"
 version = "0.7.0"
 description = "McCabe checker, plugin for flake8"
@@ -533,7 +544,7 @@ python-versions = ">=3.7"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "4353b2ab54769f3abd59c9de13567038a3425a200e88f27467fc071d7b8f64d9"
+content-hash = "812338e129ac3b5a15c0104004d78073ddfabb418ad4d76be6364fa40e98acae"
 
 [metadata.files]
 anyio = [
@@ -702,6 +713,10 @@ iniconfig = [
 isort = [
     {file = "isort-5.10.1-py3-none-any.whl", hash = "sha256:6f62d78e2f89b4500b080fe3a81690850cd254227f27f75c3a0c491a1f351ba7"},
     {file = "isort-5.10.1.tar.gz", hash = "sha256:e8443a5e7a020e9d7f97f1d7d9cd17c88bcb3bc7e218bf9cf5095fe550be2951"},
+]
+mangum = [
+    {file = "mangum-0.16.0-py3-none-any.whl", hash = "sha256:c687724d10504ae2570733a14b939479454268094309c596ef6cc1710e5029b0"},
+    {file = "mangum-0.16.0.tar.gz", hash = "sha256:afdf3799797696d849870ede07d4aedadb2df815019b1f469d3cabe45fb8e42e"},
 ]
 mccabe = [
     {file = "mccabe-0.7.0-py2.py3-none-any.whl", hash = "sha256:6c2d30ab6be0e4a46919781807b4f0d834ebdd6c6e3dca0bda5a15f863427b6e"},
